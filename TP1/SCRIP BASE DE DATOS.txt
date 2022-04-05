@@ -1,0 +1,265 @@
+CREATE DATABASE proyecto
+
+
+CREATE TABLE usuario (
+
+  idusuario int(11) PRIMARY KEY NOT NULL,
+  nombre varchar(45) NOT NULL,
+  apellido1 varchar(45) NOT NULL,
+  apellido2 varchar(45) DEFAULT NULL,
+  nombre_identitario varchar(45) DEFAULT NULL,
+  num_documento int(11) NOT NULL,
+  fecha_nacimiento date NOT NULL,
+  FOREING KEY (idrol) REFERENCES rol(idrol),
+  FOREING KEY (idgrupoEtnico) REFERENCES grupoEtnico(idgrupoEtnico),
+  FOREING KEY (idtipDocumento) REFERENCES tipoDocumento(idtipoDocumento),
+  FOREING KEY (idIdentidadDeGenero) REFERENCES identidadDeGenero(idIdentidadDeGenro)
+
+);
+
+
+CREATE TABLE rol (
+  idrol int(11) NOT NULL,
+  descripcion varchar(45) NOT NULL
+);
+
+
+CREATE TABLE tipo_documento (
+  idtipodocumento int(11) NOT NULL,
+  descripcion varchar(45) NOT NULL
+);
+
+
+CREATE TABLE grupoetnico (
+  idgrupoEtnico int(11) NOT NULL,
+  grupoEtnico varchar(45) DEFAULT NULL,
+  descripcion varchar(45) DEFAULT NULL
+);
+
+
+CREATE TABLE calendario (
+  idcalendario int(11) NOT NULL,
+  descripcion varchar(45) NOT NULL,
+  hora time NOT NULL,
+  dia int(11) NOT NULL,
+  mes varchar(45) DEFAULT NULL,
+  año int(11) NOT NULL
+); 
+
+
+CREATE TABLE evento (
+  idevento int(11) NOT NULL,
+  asunto varchar(45) NOT NULL,
+  descripcion varchar(45) DEFAULT NULL,
+  proceso varchar(45) NOT NULL,
+  area_organizativa varchar(45) NOT NULL,
+  FOREING KEY (idcalendario) REFERENCES calendario(idcalendario)
+);
+
+
+
+CREATE TABLE info_evento (
+  idinfoevento int(11) NOT NULL,
+  fecha date NOT NULL,
+  hora time NOT NULL,
+  lugar varchar(45) NOT NULL,
+  FOREING KEY (idusuario) REFERENCES usuario(idusuario),
+  FOREING KEY (idevento) REFERENCES evento(idevento)
+);
+
+
+
+CREATE TABLE identidaddegenero (
+  idIdentidadDeGenero int(11) NOT NULL,
+  descripcion varchar(45) NOT NULL
+);
+
+
+
+CREATE TABLE estudios (
+  idestudios int(11) NOT NULL,
+  tipo_estudio varchar(45) NOT NULL,
+  descripcion varchar(45) NOT NULL,
+  FOREING KEY (idusuario) REFERENCES usuario(idusuario),
+)
+
+
+
+CREATE TABLE persona_contacto (
+  idgpersonacontacto int(11) NOT NULL,
+  nombre varchar(45) NOT NULL,
+  apellido varchar(45) NOT NULL,
+  num_telefono int(11) NOT NULL,
+  correo_electronico varchar(45) NOT NULL,
+  parentesco varchar(45) NOT NULL,
+  FOREING KEY (idusuario) REFERENCES usuario(idusuario),
+);
+
+
+CREATE TABLE donacion (
+  iddonacion int(11) NOT NULL,
+  descripcion varchar(45) NOT NULL
+);
+
+
+
+CREATE TABLE info_donacion (
+  idinfodonacion int(11) NOT NULL,
+  FOREING KEY (idusuario) REFERENCES usuario(idusuario),
+  FOREING KEY (iddonacion) REFERENCES donacion(iddonacion),
+);
+
+
+
+CREATE TABLE direccion (
+  iddireccion int(11) NOT NULL,
+  direccion varchar(45) NOT NULL,
+  estrato varchar(45) NOT NULL,
+  idciudad int(11) NOT NULL,
+  idusuario int(11) NOT NULL,
+  FOREING KEY (idciudad) REFERENCES ciudad(idciudad),
+  FOREING KEY (idusuario) REFERENCES usuario(idusuario),
+
+
+);
+
+
+CREATE TABLE departamento (
+  iddepartamento int(11) NOT NULL,
+  descripcion varchar(45) NOT NULL
+)
+
+
+CREATE TABLE ciudad (
+  idciudad int(11) NOT NULL,
+  ciudad varchar(45) NOT NULL,
+  localidad varchar(45) NOT NULL,
+  barrio varchar(45) NOT NULL,
+  codigo_postal varchar(45) DEFAULT NULL,
+  iddepartamento int(11) NOT NULL,
+  FOREING KEY (iddepartamento) REFERENCES departamento (iddepartamento),
+);
+
+
+CREATE TABLE calendario (
+  idcalendario int(11) NOT NULL,
+  descripcion varchar(45) NOT NULL,
+  hora time NOT NULL,
+  dia int(11) NOT NULL,
+  mes varchar(45) DEFAULT NULL,
+  año int(11) NOT NULL
+);
+
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+INSERT INTO `rol`(`idrol`, `descripcion`) 
+VALUES ('[value-1]','Participante'), ('[value-1]','Colaborador'), ('[value-1]','Colaborador'), ('[value-1]','Participante'),('[value-1]','Participante');
+
+
+
+INSERT INTO `tipo_documento`(`idtipodocumento`, `descripcion`) 
+VALUES ('[value-1]','CC'), ('[value-1]','CC'), ('[value-1]','CC'), ('[value-1]','CC');
+
+
+INSERT INTO `grupoetnico`(`idgrupoEtnico`, `grupoEtnico`, `descripcion`) 
+VALUES ('[value-1]','Ninguno','Ninguno'), ('[value-1]','Ninguno','Ninguno'), ('[value-1]','Ninguno','Ninguno'), ('[value-1]','Ninguno','Ninguno');
+
+
+INSERT INTO `identidaddegenero`(`idIdentidadDeGenero`, `descripcion`) VALUES ('[value-1]','Masculino'), ('[value-1]','Femenino'), ('[value-1]','Trans');
+
+
+INSERT INTO `usuario`(`idusuario`, `nombre`, `apellido1`, `apellido2`, `nombre_identitario`, `num_documento`, `fecha_nacimiento`, `idrol`, `idgrupoEtnico`, `idtipoDocumento`, `ididentidadDeGenero`) 
+VALUES ('[value-1]','David','Garcia','Martinez','','1993094751','20-02-2002','1','1','1','1'),
+('[value-1]','Elena','Fuentes','Marquez','','1999384755','12-12-2000','2','2','2','2'), 
+('[value-1]','Mario','Perez','Gonzales','','1777946758','22-10-2001','3','3','3','3'),
+('[value-1]','Sara','Pelaez','','','1883645366','[value-7]','4','4','4','4') ,
+('[value-1]','Joa','Sanchez','Lopez','','1000384655','1-03-2000','5','5','5','5');
+
+
+INSERT INTO `direccion`(`iddireccion`, `direccion`, `estrato`, `idciudad`, `idusuario`) 
+VALUES 
+('[value-1]','Carrera 9B','0','1','1'),
+('[value-1]','Diagonal 48J Sur','2','2','2'),
+('[value-1]','Calle 56H','1','3','3'),
+('[value-1]','Carrera 7 Con Calle 12','2','4','4'),
+('[value-1]','Transversal 14T Bis','0','5','5');
+
+
+INSERT INTO departamento (iddepartamento, descripcion) 
+VALUES 
+('[value-1]','Bogotá D.C'),
+('[value-1]','Antioquia'),
+('[value-1]','Cundinamarca'),
+('[value-1]','Cundinamarca'),
+('[value-1]','Bogotá D.C');
+
+
+INSERT INTO ciudad(idciudad, ciudad, localidad, barrio, codigo_postal, iddepartamento) 
+VALUES 
+('[value-1]','Bogotá D.C','Usme','Virrey','[value-5]','1'),
+('[value-1]','Medellin','Poblado','Pobrenza','[value-5]','2'),
+('[value-1]','Soacha','Hogares','Oportunidad 2','[value-5]','3'),
+('[value-1]','Soacha','El Danubio','El triunfo','[value-5]','4'),
+('[value-1]','Bogotá D.C','Bosa','Bosa la amistad','[value-5]','5');
+
+
+INSERT INTO evento (idevento, asunto, descripcion, proceso, area_organizativa, idcalendario) 
+VALUES 
+('[value-1]','Informacion','Entrega de informacion','Presencial','Administracion','2'),
+('[value-1]','Taller','Psicologia','Virtual','Colaborador','3'),
+('[value-1]','Charla','Motivacional','Virtual','Colaborador','4'),
+('[value-1]','Donacion1','Tiempo','Virtual','Colaborador','5'),
+('[value-1]','Reunion Administrativa','Informe general','Presencial','Administracion','6');
+
+
+INSERT INTO calendario (idcalendario, descripcion, hora, dia, mes, año)
+VALUES
+ ('[value-1]','Evento Primer enceuntro','14:30:00','20','02','2022'),
+ ('[value-1]','Evento Donacion','13:07:30','15','03','2022'),
+ ('[value-1]','Evento Charla','11:50:00','28','05','2022'),
+ ('[value-1]','Evento Encuentro','12:00:00','02','06','2002'),
+ ('[value-1]','Evento Psicologia','16:00:00','30','09','2022');
+
+
+INSERT INTO info_evento(`idinfoevento`, `idusuario`, `idevento`, `fecha`, `hora`, `lugar`) 
+VALUES 
+('1','1','1','24-06-2022','12:00','VIRTUAL'),
+('2','2','2','24-06-2022','01:00','VIRTUAL'), 
+('3','3','3','24-06-2022','03:00','VIRTUAL'), 
+('4','4','4','24-06-2022','04:00','VIRTUAL'), 
+('5','5','5','24-06-2022','05:00','VIRTUAL');
+
+
+INSERT INTO `persona_contacto`(`idgpersonacontacto`, `nombre`, `apellido`, `num_telefono`, `correo_electronico`, `parentesco`, `idusuario`) VALUES 
+('[value-1]','Carlos','Vergara','3125644578','carlitos123@gmail.com','Padre','1'),
+('[value-1]','Maria','Castro','3158766545','maria_PTE@gmail.com','Tia','2'),
+('[value-1]','Daniela','Garcia','3184122417','solo_mvd@gmail.com','hermana','3'),
+('[value-1]','Fabian','Velandia','3217226674','freeinsano@gmail.com','abuelo','4'),
+('[value-1]','Valeria','Lopez','3014030903','vale85_solomillos@gmail.com','madrastra','5');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
